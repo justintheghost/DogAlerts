@@ -4,3 +4,4 @@ requests
 beautifulsoup4
 twilio
 psycopg2
+google-cloud-secret-manager

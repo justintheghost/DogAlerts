@@ -66,7 +66,7 @@ def get_existing_animal_ids():
 
     return existing_animal_ids_clean
 
-def send_sms(twilio_account_sid, twilio_auth_token, new_animal_info):          
+def send_sms(new_animal_info):          
     message_body = f"Petunia Alert! There are {str(len(new_animal_info))} new pups available at Wrightway Rescue."
 
     for animal in new_animal_info:
@@ -106,9 +106,7 @@ def main():
     new_animal_info = get_new_animal_info(all_animals, new_animal_id_list)
 
     if len(new_animal_id_list) > 0:
-        send_sms(secrets.twilio_account_sid, secrets.twilio_auth_token, new_animal_info)
+        send_sms(new_animal_info)
         add_new_animals_to_database(new_animal_id_list)
     else:
         print("No new pups :(")
-
-main()

@@ -4,7 +4,6 @@ from datetime import datetime
 import os
 from twilio.rest import Client
 import utils
-import secrets
 
 # Scrapes Wrightway/Petango site and returns all animal IDs
 def get_all_animals_from_site():
@@ -76,6 +75,8 @@ def send_sms(twilio_account_sid, twilio_auth_token, new_animal_info):
         Gender: {animal['gender']}
         Link: {animal['details_url']}
         """
+    twilio_account_sid = utils.access_secret_version("twilio_account_sid")
+    twilio_auth_token = utils.access_secret_version("twilio_auth_token")
 
     client = Client(twilio_account_sid, twilio_auth_token)
     numbers = ['+12244064823','+12174930473']

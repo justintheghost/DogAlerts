@@ -110,4 +110,4 @@ def main(request):
     else:
         print("No new pups :(")
 
-    return request.get_json()
+    return f'Hello World'

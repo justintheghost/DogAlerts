@@ -109,3 +109,5 @@ def main(request):
         add_new_animals_to_database(new_animal_id_list)
     else:
         print("No new pups :(")
+        
+    return request

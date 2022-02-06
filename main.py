@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import os
 from twilio.rest import Client
 import utils
 
@@ -100,7 +99,7 @@ def add_new_animals_to_database(new_animal_id_list):
     except Exception as e:
         print(f"Failed to write new animals to database with error: {e}")
 
-def main():
+def main(request):
     all_animals = get_all_animals_from_site()
     new_animal_id_list = identify_new_animal_ids(all_animals)
     new_animal_info = get_new_animal_info(all_animals, new_animal_id_list)

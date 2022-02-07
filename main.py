@@ -138,5 +138,4 @@ def hello_world(request):
         return request_json['message']
     else:
         return f'Hello World!'    
-
-main("hi")        
+   

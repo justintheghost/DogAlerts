@@ -5,3 +5,4 @@ beautifulsoup4
 twilio
 psycopg2
 google-cloud-secret-manager
+google-cloud-logging

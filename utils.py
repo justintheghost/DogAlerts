@@ -36,7 +36,12 @@ def execute_select_query(query):
     #establishing the connection
     log_event("Establishing connection...")
     conn = psycopg2.connect(
-        database="postgres", user='postgres', password=postgres_password, host=postgres_host, port= '5432'
+        database="postgres"
+        , user='postgres'
+        , password=postgres_password
+        , host=postgres_host
+        , port= '5432'
+        , connect_timeout = 30
     )
     #Creating a cursor object using the cursor() method
     cursor = conn.cursor()
@@ -44,7 +49,7 @@ def execute_select_query(query):
     #Executing an MYSQL function using the execute() method
     log_event("Execute query...")
     cursor.execute(query)
-    
+
     log_event("Fetch data...")
     data = cursor.fetchall()
     # print("Connection established to: ",data)

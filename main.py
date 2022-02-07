@@ -71,32 +71,34 @@ def get_existing_animal_ids():
     return existing_animal_ids_clean
 
 def send_sms(new_animal_info):          
-    message_body = f"Petunia Alert! There are {str(len(new_animal_info))} new pups available at Wrightway Rescue."
+    message_body = f"""Petunia Alert!
+There are {str(len(new_animal_info))} new pups available at Wrightway Rescue.
+"""
 
     for animal in new_animal_info:
-        message_body = message_body + f"""
-        Name: {animal['name']}
-        Gender: {animal['gender']}
-        Link: {animal['details_url']}
+        message_body = message_body + f"""{animal['name']}: {animal['details_url']}
         """
 
-    print(message_body)        
+    #print(message_body)        
+    n = 1500
+    message_body_split = [message_body[index : index + n] for index in range(0, len(message_body), n)]
     twilio_account_sid = utils.access_secret_version("twilio_account_sid")
     twilio_auth_token = utils.access_secret_version("twilio_auth_token")
 
     client = Client(twilio_account_sid, twilio_auth_token)
     numbers = ['+12244064823','+12174930473']
-    for number in numbers:
-        try:
-            message = client.messages \
-            .create(
-                body=message_body,
-                from_='+19035009230',
-                to=number
-            )
-            print(message.sid)
-        except Exception as e:
-            print(f"Message failed with error message: {e}")
+    for message_part in message_body_split:
+        for number in numbers:
+            try:
+                message = client.messages \
+                .create(
+                    body=message_part,
+                    from_='+19035009230',
+                    to=number
+                )
+                print(message.sid)
+            except Exception as e:
+                print(f"Message failed with error message: {e}")
 
 def add_new_animals_to_database(new_animal_id_list):
     data = [(i, datetime.now(), datetime.now()) for i in new_animal_id_list]
@@ -142,4 +144,3 @@ def hello_world(request):
         return request_json['message']
     else:
         return f'Hello World!'    
-   

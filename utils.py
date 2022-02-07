@@ -5,6 +5,7 @@ import os
 from twilio.rest import Client
 import psycopg2
 from google.cloud import logging
+import sqlalchemy
 
 def access_secret_version(secret_id, project_id="dogalert", version_id="latest"):
     """
@@ -41,7 +42,6 @@ def execute_select_query(query):
         , password=postgres_password
         , host=postgres_host
         , port= '5432'
-        , connect_timeout = 30
     )
     #Creating a cursor object using the cursor() method
     cursor = conn.cursor()
@@ -90,7 +90,6 @@ def log_event(message):
 
     # Writes the log entry
     logger.log_text(message)
-
 
 # def seed_database_with_animal_ids():
 #     all_animals = get_all_animals()

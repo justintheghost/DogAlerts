@@ -34,6 +34,7 @@ postgres_host = access_secret_version("postgres_host")
 
 def execute_select_query(query):
     #establishing the connection
+    log_event("Establishing connection...")
     conn = psycopg2.connect(
         database="postgres", user='postgres', password=postgres_password, host=postgres_host, port= '5432'
     )
@@ -41,10 +42,15 @@ def execute_select_query(query):
     cursor = conn.cursor()
 
     #Executing an MYSQL function using the execute() method
+    log_event("Execute query...")
     cursor.execute(query)
+    
+    log_event("Fetch data...")
     data = cursor.fetchall()
     # print("Connection established to: ",data)
+    log_event("Commit transaction...")
     conn.commit()
+    
  
     conn.close()
     return data

@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 from twilio.rest import Client
 import psycopg2
+from google.cloud import logging
 
 def access_secret_version(secret_id, project_id="dogalert", version_id="latest"):
     """
@@ -67,7 +68,18 @@ def execute_multiple_row_insert(list):
     conn.commit()
  
     conn.close()
- 
+
+def log_event(message):
+    logging_client = logging.Client()
+
+    # The name of the log to write to
+    log_name = "dog-alert-log"
+    # Selects the log to write to
+    logger = logging_client.logger(log_name)
+
+    # Writes the log entry
+    logger.log_text(message)
+
 
 # def seed_database_with_animal_ids():
 #     all_animals = get_all_animals()

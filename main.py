@@ -4,6 +4,7 @@ from datetime import datetime
 from twilio.rest import Client
 import utils
 
+
 # Scrapes Wrightway/Petango site and returns all animal IDs
 def get_all_animals_from_site():
     #petango_soup = BeautifulSoup(open("response.txt").read(),'html.parser')
@@ -74,6 +75,8 @@ def send_sms(new_animal_info):
         Gender: {animal['gender']}
         Link: {animal['details_url']}
         """
+
+    print(message_body)        
     twilio_account_sid = utils.access_secret_version("twilio_account_sid")
     twilio_auth_token = utils.access_secret_version("twilio_auth_token")
 
@@ -100,17 +103,25 @@ def add_new_animals_to_database(new_animal_id_list):
         print(f"Failed to write new animals to database with error: {e}")
 
 def main(request):
+    utils.log_event("Starting main function...")
+    utils.log_event("Running get_all_animals_from_site()...")
     all_animals = get_all_animals_from_site()
+    utils.log_event("Running identify_new_animal_ids()...")
     new_animal_id_list = identify_new_animal_ids(all_animals)
+    utils.log_event("Running get_new_animal_info()...")
     new_animal_info = get_new_animal_info(all_animals, new_animal_id_list)
 
+    utils.log_event("Send SMS...")
     if len(new_animal_id_list) > 0:
+        utils.log_event("Send SMS...")
         send_sms(new_animal_info)
+        utils.log_event("Writing new animals to database...")
         add_new_animals_to_database(new_animal_id_list)
     else:
         print("No new pups :(")
 
     return f'Hello World'
+
 def hello_world(request):
     """Responds to any HTTP request.
     Args:
@@ -127,3 +138,5 @@ def hello_world(request):
         return request_json['message']
     else:
         return f'Hello World!'    
+
+main("hi")        

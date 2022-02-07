@@ -25,6 +25,7 @@ def identify_new_animal_ids(all_animals):
     # Check IDs in Database and compare to id_list
     # if there are any IDs in the id_list that aren't in the database, those are new
     all_animal_ids_from_site = get_all_animal_ids_from_site(all_animals)
+    utils.log_event("Getting existing info from database...")
     existing_animal_ids = get_existing_animal_ids()
     new_animal_id_list = list(set(all_animal_ids_from_site) - set(existing_animal_ids))
 
@@ -61,6 +62,7 @@ def get_new_animal_info(all_animals, new_animal_id_list):
 
 def get_existing_animal_ids():
     query = "SELECT dog_id FROM dog_alerts.dogs"
+    utils.log_event("Getting existing info from database...")
     existing_animal_ids = utils.execute_select_query(query)
     existing_animal_ids_clean = [i[0] for i in existing_animal_ids]
 

@@ -9,7 +9,9 @@ import utils
 def get_all_animals_from_site():
     #petango_soup = BeautifulSoup(open("response.txt").read(),'html.parser')
     petango_url = "https://ws.petango.com/webservices/adoptablesearch/wsAdoptableAnimals.aspx?species=Dog&gender=A&agegroup=UnderYear&location=&site=&onhold=A&orderby=name&colnum=3&css=http://ws.petango.com/WebServices/adoptablesearch/css/styles.css&authkey=io53xfw8b0k2ocet3yb83666507n2168taf513lkxrqe681kf8&recAmount=&detailsInPopup=No&featuredPet=Include&stageID=&wmode=opaque"
+    utils.log_event("Sending request to website...")
     petango_url_response = requests.get(url=petango_url)
+    utils.log_event("Received request, transforming into BS4 format...")
     petango_soup = BeautifulSoup(petango_url_response.text, 'html.parser')
     petango_table_all_animals = petango_soup.find("table",{"id":"tblSearchResults"})
 

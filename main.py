@@ -117,7 +117,6 @@ def main(request):
     utils.log_event("Running get_new_animal_info()...")
     new_animal_info = get_new_animal_info(all_animals, new_animal_id_list)
 
-    utils.log_event("Send SMS...")
     if len(new_animal_id_list) > 0:
         utils.log_event("Send SMS...")
         send_sms(new_animal_info)

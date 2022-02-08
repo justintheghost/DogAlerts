@@ -5,7 +5,6 @@ import os
 from twilio.rest import Client
 import psycopg2
 from google.cloud import logging
-import sqlalchemy
 
 def access_secret_version(secret_id, project_id="dogalert", version_id="latest"):
     """
@@ -40,7 +39,7 @@ def execute_select_query(query):
         database="postgres"
         , user='postgres'
         , password=postgres_password
-        , host="/cloudsql/dogalert:us-central1:dog-alert-db"
+        , host=postgres_host
         , port= '5432'
     )
     #Creating a cursor object using the cursor() method
@@ -91,26 +90,6 @@ def log_event(message):
     # Writes the log entry
     logger.log_text(message)
 
-def run_sql():
-    pool = sqlalchemy.create_engine(
-
-    # Equivalent URL:
-    # postgresql+pg8000://<db_user>:<db_pass>@/<db_name>
-    #                         ?unix_sock=<socket_path>/<cloud_sql_instance_name>/.s.PGSQL.5432
-    # Note: Some drivers require the `unix_sock` query parameter to use a different key.
-    # For example, 'psycopg2' uses the path set to `host` in order to connect successfully.
-    sqlalchemy.engine.URL.create(
-        drivername="postgresql",
-        username="postgres",  # e.g. "my-database-user"
-        password=postgres_password,  # e.g. "my-database-password"
-        database="postgres",  # e.g. "my-database-name"
-        query={
-            "unix_sock": "{}/{}/.s.PGSQL.5432".format(
-                "/cloudsql",  # e.g. "/cloudsql"
-                "dogalert:us-central1:dog-alert-db")  # i.e "<PROJECT-NAME>:<INSTANCE-REGION>:<INSTANCE-NAME>"
-        }
-    )
-)
 # def seed_database_with_animal_ids():
 #     all_animals = get_all_animals()
 #     all_animal_ids = get_all_animal_ids(all_animals)
